@@ -45,3 +45,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.xlsx
+*.png
+*.mat
+*.bmp
+*.asv
+*.jpg
+Set of images/rosetta/data/README.txt
+*.txt

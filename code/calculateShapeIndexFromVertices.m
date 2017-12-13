@@ -46,9 +46,10 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
             %checking if the vertice is a cross and delete one
             cellsNeighsRep=threesomes(threesomes~=i);
             uniqNeighs=unique(cellsNeighsRep);
+            i
             %if a cell is present more than 2 times, out one vertex
             if sum(histc(cellsNeighsRep, uniqNeighs)>2)>0
-                cellsCross = uniqNeighs(histc(cellsNeighsRep, uniqNeighs)==3);
+                cellsCross = uniqNeighs(histc(cellsNeighsRep, uniqNeighs)>2);
                 vert2delete=zeros(size(threesomes,1),1);
                 for nCross=1:length(cellsCross)
                     vert2delete=vert2delete+sum(threesomes==cellsCross(nCross),2);

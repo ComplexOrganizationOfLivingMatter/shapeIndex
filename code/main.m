@@ -4,7 +4,7 @@ rootPath='..\Set of images\';
 folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSickEpitheliums\Case II',...
     'simulationSickEpitheliums\Case III','simulationSickEpitheliums\Case IV',...
     'simulationSickEpitheliums\Control Sim no Prol','simulationSickEpitheliums\Control Sim Prolif',...
-    'simulationSickEpitheliums\Ideal Area 1 Sim','voronoiDiagrams','voronoiNoise'...
+    'simulationSickEpitheliums\Ideal Area 1 Sim','epitheliums\rosetta','voronoiDiagrams','voronoiNoise'...
     'epitheliums\cNT','epitheliums\dWL','epitheliums\dWP',...
     'epitheliums\dMWP','epitheliums\Eyes'};
 
@@ -12,15 +12,16 @@ artifactsSize=25;
 shapeIndexTable={};
 counter=1;
 
-for i=3:8%length(folders)
+for i=8:9%length(folders)
    
     imagesPath=[rootPath folders{i} '\images\'];
     dataPath=[rootPath folders{i} '\data\'];
     imagesName=dir(imagesPath); 
     imagesName=imagesName(3:end,:);
+     
         
     shapeIndexTable=cell(size(imagesName,1),4);
-    parfor j=1:size(imagesName,1) %parfor
+    for j=1:size(imagesName,1) %parfor
         photoName=imagesName(j).name;
         img=imread([imagesPath photoName]);
         

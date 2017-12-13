@@ -54,9 +54,15 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
                 for nCross=1:length(cellsCross)
                     vert2delete=vert2delete+sum(threesomes==cellsCross(nCross),2);
                 end
-                V=V(logical(1-(vert2delete==2)),:);
-                threesomes=threesomes(logical(1-(vert2delete==2)),:);
-            end
+                v2delete=find(vert2delete==2);
+                if size(v2delete,1)>1
+                    VDelete=V(v2delete,:);
+                    distMatrix=squareform(pdist([VDelete;V]));
+                    v2delete=v2delete(sum(distMatrix(size(VDelete,1)+1:end,1:size(VDelete,1))<10)>1);
+                end
+                threesomes=threesomes(~ismember(1:size(V,1),v2delete),:);
+                V=V(~ismember(1:size(V,1),v2delete),:);
+          end
             
             %get perimeter from vertices,
             %and sorted vertices to create a polygon and capture it area

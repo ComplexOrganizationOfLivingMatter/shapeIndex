@@ -30,7 +30,11 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
     validCells=setxor(numCells,noValidCells);
     
     %calculate area and perimeter of involved cells
-    [areaCells,perimCells]=calculateAreaPerim(W,verticesInfo,validCells);    
+    try
+        [areaCells,perimCells]=calculateAreaPerim(W,verticesInfo,validCells);
+    catch ex
+        throw ex
+    end
 
     medianShapeIndex=median((perimCells(validCells)./sqrt(areaCells(validCells))));
     averageShapeIndex=mean((perimCells(validCells)./sqrt(areaCells(validCells))));

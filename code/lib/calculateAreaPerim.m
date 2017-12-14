@@ -7,7 +7,7 @@ function [areaCells,perimCells]=calculateAreaPerim(L_img,verticesInfo,validCells
     emptyCells=find(cell2mat(cellfun(@(x) isempty(x),verticesInfo.verticesPerCell,'UniformOutput',false))==1);
     perimCells=zeros(totalCells,1);
     areaCells=zeros(totalCells,1);
-
+    figure;
     
     for i=1:totalCells
         
@@ -42,6 +42,11 @@ function [areaCells,perimCells]=calculateAreaPerim(L_img,verticesInfo,validCells
             %and sorted vertices to create a polygon and capture it area
             [perimCells(i),sortedVertices] = perimeterFromVertices(V,threesomes);
             areaCells(i)=polyarea(sortedVertices(:,1),sortedVertices(:,2));
+            if size(sortedVertices, 1) < 4
+                throw exception
+            end
+            plot(sortedVertices(:,1),sortedVertices(:,2));
+            hold on;
         end
     end
             

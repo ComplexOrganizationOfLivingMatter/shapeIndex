@@ -1,4 +1,4 @@
-function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexReducingBorders( L_img )
+function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexReducingBorders( L_img,folderName )
 
     %getshape index from natural images reducing their borders to 1 pixel
     BW=zeros(size(L_img));
@@ -10,6 +10,8 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
         W=watershed(logical(BW),8);
     end
     
+    
+    
     %getting valid cells
     totalCells=max(max(W));
     numCells=1:totalCells;
@@ -19,8 +21,16 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
     lastColumnCells=unique(W(1:end,end))';
     noValidCells=unique([firstRowCells,lastRowCells,firstColumnCells,lastColumnCells]);
     noValidCells=noValidCells(noValidCells~=0);
-    validCells=setxor(numCells,noValidCells);
     
+    if ~isempty(strfind(folderName,'epitheliums\rosette'))
+        if noValidCells==1
+            %calculate neighs
+            [neighs,~]=calculateNeighbours(W);
+            noValidCells=[noValidCells;neighs{noValidCells}];
+        end
+    end
+    validCells=setxor(numCells,noValidCells);
+
     %calculate area, perimeter and shape index from regionprops
     area=regionprops(W,'Area');
     perim=regionprops(W,'Perimeter');

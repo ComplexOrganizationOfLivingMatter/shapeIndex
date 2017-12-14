@@ -10,7 +10,6 @@ folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSi
 
 artifactsSize=25;
 shapeIndexTable={};
-counter=1;
 
 for i=8:9%length(folders)
    

@@ -62,7 +62,7 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
                 end
                 threesomes=threesomes(~ismember(1:size(V,1),v2delete),:);
                 V=V(~ismember(1:size(V,1),v2delete),:);
-          end
+            end
             
             %get perimeter from vertices,
             %and sorted vertices to create a polygon and capture it area

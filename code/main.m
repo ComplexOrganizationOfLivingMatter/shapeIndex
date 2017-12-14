@@ -10,9 +10,10 @@ folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSi
 
 artifactsSize=25;
 shapeIndexTable={};
-counter=1;
+%%diagramNumbers = {'001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016', '017', '018', '019', '020', '030', '040', '050', '060', '070', '080', '090', '100', '200', '300', '400', '500', '600', '700'};
 
-for i=8:9%length(folders)
+
+for i=1:length(folders)
    
     imagesPath=[rootPath folders{i} '\images\'];
     dataPath=[rootPath folders{i} '\data\'];
@@ -21,33 +22,34 @@ for i=8:9%length(folders)
      
         
     shapeIndexTable=cell(size(imagesName,1),4);
-    for j=1:size(imagesName,1) %parfor
+    parfor j=1:size(imagesName,1) %parfor
         photoName=imagesName(j).name;
-        img=imread([imagesPath photoName]);
-        
-        BW=im2bw(img);
-        if(sum(sum(BW==0))>sum(sum(BW==1)))
-           BW=1-BW; 
-        end
-        BW=bwareaopen(BW,artifactsSize);
-        L_img=bwlabel(BW);
-        if max(max(L_img))<20
-            L_img=bwlabel(BW,4);
-        end
-       
-                
-        %calculate area and perimeter from vertices
-        
-        if isempty(strfind(folders{i},'epitheliums\'))
-            [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexFromVertices( L_img );
-        else
-            [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexReducingBorders( L_img );   
-        end
-        photoName
+        %%if any(cellfun(@(x) isempty(strfind(photoName, x)) == 0, diagramNumbers))
+            img=imread([imagesPath photoName]);
 
-        shapeIndexTable(j,:)={photoName,medianShapeIndex,averageShapeIndex,totalValidCells};
-      
-       
+            BW=im2bw(img);
+            if(sum(sum(BW==0))>sum(sum(BW==1)))
+               BW=1-BW; 
+            end
+            BW=bwareaopen(BW,artifactsSize);
+            L_img=bwlabel(BW);
+            if max(max(L_img))<20
+                L_img=bwlabel(BW,4);
+            end
+
+
+            %calculate area and perimeter from vertices
+
+            if isempty(strfind(folders{i},'epitheliums\'))
+                [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexFromVertices( L_img );
+            else
+                [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexReducingBorders( L_img );   
+            end
+            photoName
+
+            shapeIndexTable(j,:)={photoName,medianShapeIndex,averageShapeIndex,totalValidCells};
+
+        %%end
     end
     folders{i}
     shapeIndexTable=cell2table(shapeIndexTable,'VariableNames',{'name','median','mean','numValidCells'});

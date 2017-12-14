@@ -31,7 +31,7 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
     
     %calculate area and perimeter of involved cells
     [areaCells,perimCells]=calculateAreaPerim(W,verticesInfo,validCells);    
-    
+
     medianShapeIndex=median((perimCells(validCells)./sqrt(areaCells(validCells))));
     averageShapeIndex=mean((perimCells(validCells)./sqrt(areaCells(validCells))));
     

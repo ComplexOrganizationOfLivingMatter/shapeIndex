@@ -12,6 +12,7 @@ folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSi
 artifactsSize=25;
 
 for i=17:length(folders)
+
    
     imagesPath=[rootPath folders{i} '\images\'];
     dataPath=[rootPath folders{i} '\data\'];
@@ -61,6 +62,7 @@ for i=17:length(folders)
         
       
        
+
     end
     folders{i}
     if flat==0

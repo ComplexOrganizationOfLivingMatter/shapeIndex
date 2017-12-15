@@ -8,11 +8,15 @@ folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSi
     'simulationSickEpitheliums\Ideal Area 1 Sim','voronoiDiagrams','voronoiNoise'...
     'epitheliums\cNT','epitheliums\dWL','epitheliums\dWP',...
     'epitheliums\dMWP','epitheliums\Eyes','epitheliums\rosette',...
-    'voronoiWeighted'};
+    'voronoiWeighted\half','voronoiWeighted\disk'};
 
 artifactsSize=25;
+filterCVT=[1:20,30:10:100,200:100:700];
 
-for i=11:length(folders)-1
+filterVoronoiWeighted=[4,10:10:80];
+filterVoronoiWeighted=arrayfun(@(x) num2str(x,'%10.2f\n'),filterVoronoiWeighted,'UniformOutput',false);
+
+for i=length(folders)-1:length(folders)
 
    
     imagesPath=[rootPath folders{i} '\images\'];
@@ -20,10 +24,10 @@ for i=11:length(folders)-1
     imagesName=dir(imagesPath); 
     imagesName=imagesName(3:end,:);
     
-    flat=0; 
-    if ~isempty(strfind(folders{i},'voronoiWeighted'))    
+    flag=0; 
+    if ~isempty(strfind(folders{i},'voronoiWeighted')) 
         shapeIndexTable=cell(size(imagesName,1),7);
-        flat=1;
+        flag=1;
     else
         shapeIndexTable=cell(size(imagesName,1),4); 
     end
@@ -47,9 +51,20 @@ for i=11:length(folders)-1
         %calculate area and perimeter from vertices
 %         if isempty(strfind(folders{i},'epitheliums\'))
             if isempty(strfind(folders{i},'voronoiWeighted'))
+                
                 [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexFromVertices( L_img );
                 shapeIndexTable(j,:)={photoName,medianShapeIndex,averageShapeIndex,totalValidCells};
             else
+                
+                flag2=[];
+                for numFilt=1:length(filterVoronoiWeighted) 
+                   flag2=[flag2,strfind(photoName,filterVoronoiWeighted{numFilt})] ;
+                end
+                
+                if isempty(flag2)
+                    continue
+                end
+                
                 [ medianShapeIndexWCells,averageShapeIndexWCells,medianShapeIndexNeighsWCells,averageShapeIndexNeighsWCells,mutantCells,neighMutantCells ] = calculateShapeIndexVoronoiWeighted( [imagesPath photoName] );
                 shapeIndexTable(j,:)={photoName,medianShapeIndexWCells,averageShapeIndexWCells,medianShapeIndexNeighsWCells,averageShapeIndexNeighsWCells,mutantCells,neighMutantCells};
                 
@@ -68,10 +83,12 @@ for i=11:length(folders)-1
 
     end
     folders{i}
-    if flat==0
+    if flag==0
         shapeIndexTable=cell2table(shapeIndexTable,'VariableNames',{'name','median','mean','numValidCells'});
     else
         shapeIndexTable=cell2table(shapeIndexTable,'VariableNames',{'name','medianWeighted','meanWeighted','medianNeighWeighted','meanNeighWeighted','weightedCells','neighWeightedCells'});
     end
-    writetable(shapeIndexTable, ['..\excels\vertices\' folders{i} '\' folders{i} '_' date '.xlsx'])
+    
+    nameFolder=strsplit(folders{i},'\');
+    writetable(shapeIndexTable, ['..\excels\vertices\' folders{i} '\' nameFolder{end} '_' date '.xlsx'])
 end

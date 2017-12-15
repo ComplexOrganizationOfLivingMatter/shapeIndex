@@ -33,7 +33,7 @@ function [ medianShapeIndexWCells,averageShapeIndexWCells,medianShapeIndexNeighs
         medianShapeIndexNeighsWCells=-1;
         averageShapeIndexNeighsWCells=-1;
         mutantCells=-1;
-        neighMutantCells;
+        neighMutantCells=-1;
     end
     
     

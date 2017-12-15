@@ -9,7 +9,7 @@ function [areaCells,perimCells]=calculateAreaPerim(L_img,verticesInfo,validCells
     areaCells=zeros(totalCells,1);
     figure('visible', 'off');    
     for i=1:totalCells
-        
+        i
         
         if ismember(i,validCells)
             [indexes,~]=find(arrayCellVertices==i);

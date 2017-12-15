@@ -33,7 +33,7 @@ for i=length(folders)-1:length(folders)
     end
     
     
-    parfor j=1:size(imagesName,1) %parfor
+    for j=1:size(imagesName,1) %parfor
         photoName=imagesName(j).name;
         img=imread([imagesPath photoName]);
         
@@ -58,7 +58,7 @@ for i=length(folders)-1:length(folders)
                 
                 flag2=[];
                 for numFilt=1:length(filterVoronoiWeighted) 
-                   flag2=[flag2,strfind(photoName,filterVoronoiWeighted{numFilt})] ;
+                   flag2=[flag2,strfind(photoName,['_' filterVoronoiWeighted{numFilt}  '_'])] ;
                 end
                 
                 if isempty(flag2)
@@ -76,7 +76,7 @@ for i=length(folders)-1:length(folders)
         photoName
         camroll(-90)
         set(gca,'Visible','off')
-        print('-dtiff','-r300',['..\excels\vertices\' folders{i} '\' photoName(1:end-4)])
+        print('-dtiff','-r300',['..\excels\vertices\' folders{i} '\' photoName(1:end-4) '.tiff'])
         close all
         
        

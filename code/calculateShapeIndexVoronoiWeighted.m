@@ -7,12 +7,29 @@ function [ medianShapeIndexWCells,averageShapeIndexWCells,medianShapeIndexNeighs
     dataPath=strrep(dataPath,'Imagen','Datos_imagen');
     load(dataPath,'wts','L_original','Vecinos')
     
+    
+    %getting valid cells
+    numCells=unique(L_original);
+    numCells=numCells(numCells~=0);
+    firstRowCells=unique(L_original(1,1:end));
+    lastRowCells=unique(L_original(end,1:end));
+    firstColumnCells=unique(L_original(1:end,1))';
+    lastColumnCells=unique(L_original(1:end,end))';
+    noValidCells=unique([firstRowCells,lastRowCells,firstColumnCells,lastColumnCells]);
+    noValidCells=noValidCells(noValidCells~=0);
+    if noValidCells==1
+        noValidCells=[noValidCells;Vecinos{noValidCells}];
+    end
+    validCells=setxor(numCells,noValidCells);
+    
+    
     wCells=(1:length(wts)).*(wts>0)';
     wCells=wCells(wCells~=0);
+    wCells=intersect(wCells,validCells)';
     
     neighWCells=unique(vertcat(Vecinos{wCells}))';
     neighWCells=setdiff(neighWCells,wCells);
-    
+    neighWCells=intersect(neighWCells,validCells)';
            
     %vertices calculation
     [verticesInfo]=calculateVertices(L_original,Vecinos);

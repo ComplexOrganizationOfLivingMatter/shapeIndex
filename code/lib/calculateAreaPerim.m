@@ -7,9 +7,9 @@ function [areaCells,perimCells]=calculateAreaPerim(L_img,verticesInfo,validCells
     emptyCells=find(cell2mat(cellfun(@(x) isempty(x),verticesInfo.verticesPerCell,'UniformOutput',false))==1);
     perimCells=zeros(totalCells,1);
     areaCells=zeros(totalCells,1);
-    figure;
-    
+    figure('visible', 'off');    
     for i=1:totalCells
+        
         
         if ismember(i,validCells)
             [indexes,~]=find(arrayCellVertices==i);

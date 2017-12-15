@@ -1,17 +1,18 @@
 
 addpath lib
+
 rootPath='..\Set of images\';
 folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSickEpitheliums\Case II',...
     'simulationSickEpitheliums\Case III','simulationSickEpitheliums\Case IV',...
     'simulationSickEpitheliums\Control Sim no Prol','simulationSickEpitheliums\Control Sim Prolif',...
-    'simulationSickEpitheliums\Ideal Area 1 Sim','epitheliums\rosette','voronoiDiagrams','voronoiNoise'...
+    'simulationSickEpitheliums\Ideal Area 1 Sim','voronoiDiagrams','voronoiNoise'...
     'epitheliums\cNT','epitheliums\dWL','epitheliums\dWP',...
-    'epitheliums\dMWP','epitheliums\Eyes',...
+    'epitheliums\dMWP','epitheliums\Eyes','epitheliums\rosette',...
     'voronoiWeighted'};
 
 artifactsSize=25;
 
-for i=17:length(folders)
+for i=11:length(folders)-1
 
    
     imagesPath=[rootPath folders{i} '\images\'];
@@ -28,7 +29,7 @@ for i=17:length(folders)
     end
     
     
-    for j=1:size(imagesName,1) %parfor
+    parfor j=1:size(imagesName,1) %parfor
         photoName=imagesName(j).name;
         img=imread([imagesPath photoName]);
         
@@ -44,7 +45,7 @@ for i=17:length(folders)
        
                 
         %calculate area and perimeter from vertices
-        if isempty(strfind(folders{i},'epitheliums\'))
+%         if isempty(strfind(folders{i},'epitheliums\'))
             if isempty(strfind(folders{i},'voronoiWeighted'))
                 [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexFromVertices( L_img );
                 shapeIndexTable(j,:)={photoName,medianShapeIndex,averageShapeIndex,totalValidCells};
@@ -53,14 +54,16 @@ for i=17:length(folders)
                 shapeIndexTable(j,:)={photoName,medianShapeIndexWCells,averageShapeIndexWCells,medianShapeIndexNeighsWCells,averageShapeIndexNeighsWCells,mutantCells,neighMutantCells};
                 
             end
-        else
-            [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexReducingBorders( L_img, folders{i} );   
-            shapeIndexTable(j,:)={photoName,medianShapeIndex,averageShapeIndex,totalValidCells};
-        end
+%         else
+%             [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeIndexReducingBorders( L_img, folders{i} );   
+%             shapeIndexTable(j,:)={photoName,medianShapeIndex,averageShapeIndex,totalValidCells};
+%         end
         photoName
-
+        camroll(-90)
+        set(gca,'Visible','off')
+        print('-dtiff','-r300',['..\excels\vertices\' folders{i} '\' photoName(1:end-4)])
+        close all
         
-      
        
 
     end
@@ -70,5 +73,5 @@ for i=17:length(folders)
     else
         shapeIndexTable=cell2table(shapeIndexTable,'VariableNames',{'name','medianWeighted','meanWeighted','medianNeighWeighted','meanNeighWeighted','weightedCells','neighWeightedCells'});
     end
-    writetable(shapeIndexTable, ['..\excels\vertices\' folders{i} '_' date '.xlsx'])
+    writetable(shapeIndexTable, ['..\excels\vertices\' folders{i} '\' folders{i} '_' date '.xlsx'])
 end

@@ -5,8 +5,10 @@ function [ medianShapeIndexWCells,averageShapeIndexWCells,medianShapeIndexNeighs
     dataPath=strrep(photoPath,'\images\','\data\');
     dataPath=strrep(dataPath,'.png','.mat');
     dataPath=strrep(dataPath,'Imagen','Datos_imagen');
-    load(dataPath,'wts','L_original','Vecinos')
+    %load(dataPath,'wts','L_original','Vecinos')
+    load(dataPath,'wts','L_original')
     
+    Vecinos=calculateNeighbours(L_original);
     
     %getting valid cells
     numCells=unique(L_original);

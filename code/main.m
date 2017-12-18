@@ -16,7 +16,7 @@ filterCVT=[1:20,30:10:100,200:100:700];
 filterVoronoiWeighted=[4,10:10:80];
 filterVoronoiWeighted=arrayfun(@(x) num2str(x,'%10.2f\n'),filterVoronoiWeighted,'UniformOutput',false);
 
-for i=length(folders)-1:length(folders)
+for i=length(folders)-1:length(folders)-1
 
    
     imagesPath=[rootPath folders{i} '\images\'];
@@ -33,7 +33,7 @@ for i=length(folders)-1:length(folders)
     end
     
     
-    for j=1:size(imagesName,1) %parfor
+    parfor j=1:size(imagesName,1) %parfor
         photoName=imagesName(j).name;
         img=imread([imagesPath photoName]);
         

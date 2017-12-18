@@ -55,3 +55,8 @@ Set of images/rosetta/data/README.txt
 *.txt
 *.tif
 *.tiff
+*.csv
+Set of images/movieLocalGrowYanlan/innerRoi/neighbours_network_cytoscape.sif
+*.mov
+*.xls
+*.sif

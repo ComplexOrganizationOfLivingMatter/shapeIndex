@@ -8,6 +8,26 @@ function [ medianShapeIndexWCells,averageShapeIndexWCells,medianShapeIndexNeighs
     %load(dataPath,'wts','L_original','Vecinos')
     load(dataPath,'wts','L_original')
     
+    %get watershed image
+    BW=zeros(size(L_original));
+    BW(L_original==0)=1;
+    
+    if max(max(bwlabel(1-BW)))<20
+       W=watershed(logical(BW),4);
+    else
+        W=watershed(logical(BW),8);
+    end
+    centroids=regionprops(W,'Centroid');
+    centroids=cat(1,centroids.Centroid);
+    %relabel with original labels
+    BW=zeros(size(W));
+    for nCen=1:length(centroids)
+        if ~isempty(centroids(nCen,1))
+            BW(W==nCen)=L_original(round(centroids(nCen,2)),round(centroids(nCen,1)));
+        end
+    end
+    L_original=BW;
+    
     Vecinos=calculateNeighbours(L_original);
     
     %getting valid cells

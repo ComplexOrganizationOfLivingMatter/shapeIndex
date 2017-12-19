@@ -1,7 +1,7 @@
 
 addpath lib
 
-rootPath='..\Set of images\';
+rootPath='..\..\imagesSet\';
 folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSickEpitheliums\Case II',...
     'simulationSickEpitheliums\Case III','simulationSickEpitheliums\Case IV',...
     'simulationSickEpitheliums\Control Sim no Prol','simulationSickEpitheliums\Control Sim Prolif',...
@@ -16,7 +16,6 @@ filterCVT=[1:20,30:10:100,200:100:700];
 filterVoronoiWeighted=[4,10:10:80];
 filterVoronoiWeighted=arrayfun(@(x) num2str(x,'%10.2f\n'),filterVoronoiWeighted,'UniformOutput',false);
 
-for i=length(folders)-1:length(folders)-1
 
    
     imagesPath=[rootPath folders{i} '\images\'];

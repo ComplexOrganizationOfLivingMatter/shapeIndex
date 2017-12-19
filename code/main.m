@@ -16,6 +16,7 @@ filterCVT=[1:20,30:10:100,200:100:700];
 filterVoronoiWeighted=[4,10:10:80];
 filterVoronoiWeighted=arrayfun(@(x) num2str(x,'%10.2f\n'),filterVoronoiWeighted,'UniformOutput',false);
 
+for i=1:length(folders)
 
    
     imagesPath=[rootPath folders{i} '\images\'];

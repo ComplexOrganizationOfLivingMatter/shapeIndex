@@ -8,7 +8,7 @@ folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSi
     'simulationSickEpitheliums\Ideal Area 1 Sim','voronoiDiagrams','voronoiNoise'...
     'epitheliums\cNT','epitheliums\dWL','epitheliums\dWP',...
     'epitheliums\dMWP','epitheliums\Eyes','epitheliums\rosette',...
-    'voronoiWeighted\half','voronoiWeighted\disk'};
+    'voronoiWeighted\half','voronoiWeighted\disk','LManningSimulations\solid','LManningSimulations\soft'};
 
 artifactsSize=25;
 filterCVT=[1:20,30:10:100,200:100:700];
@@ -16,7 +16,7 @@ filterCVT=[1:20,30:10:100,200:100:700];
 filterVoronoiWeighted=[4,10:10:80];
 filterVoronoiWeighted=arrayfun(@(x) num2str(x,'%10.2f\n'),filterVoronoiWeighted,'UniformOutput',false);
 
-for i=1:length(folders)
+for i=length(folders):length(folders)
 
    
     imagesPath=[rootPath folders{i} '\images\'];
@@ -33,7 +33,7 @@ for i=1:length(folders)
     end
     
     
-    parfor j=1:size(imagesName,1) %parfor
+    parfor j=1:size(imagesName,1) 
         photoName=imagesName(j).name;
         img=imread([imagesPath photoName]);
         

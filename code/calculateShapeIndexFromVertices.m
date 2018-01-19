@@ -22,7 +22,10 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
     lastRowCells=unique(W(end,1:end));
     firstColumnCells=unique(W(1:end,1))';
     lastColumnCells=unique(W(1:end,end))';
-    noValidCells=unique([firstRowCells,lastRowCells,firstColumnCells,lastColumnCells]);
+    outRoiCells=unique(W((1-BW)==0))';%added for neo_samples
+    
+    noValidCells=unique([firstRowCells,lastRowCells,firstColumnCells,lastColumnCells,outRoiCells]);
+    
     noValidCells=noValidCells(noValidCells~=0);
     if noValidCells==1
         noValidCells=[noValidCells;neighs{noValidCells}];

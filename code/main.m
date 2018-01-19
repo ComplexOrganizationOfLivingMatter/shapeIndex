@@ -8,7 +8,13 @@ folders={'regularHexagons','simulationSickEpitheliums\Atrophy Sim','simulationSi
     'simulationSickEpitheliums\Ideal Area 1 Sim','voronoiDiagrams','voronoiNoise'...
     'epitheliums\cNT','epitheliums\dWL','epitheliums\dWP',...
     'epitheliums\dMWP','epitheliums\Eyes','epitheliums\rosette',...
-    'voronoiWeighted\half','voronoiWeighted\disk','LManningSimulations\solid','LManningSimulations\soft'};
+    'voronoiWeighted\half','voronoiWeighted\disk','LManningSimulations\solid','LManningSimulations\soft',...
+    'neo_samples\Processed_images\neo\neo0\Skeleton_seq_roi',...
+    'neo_samples\Processed_images\neo\neo1\Skeleton_seq_roi',...
+    'neo_samples\Processed_images\neo\neo2\Skeleton_seq_roi'};
+
+
+
 
 artifactsSize=25;
 filterCVT=[1:20,30:10:100,200:100:700];
@@ -16,11 +22,12 @@ filterCVT=[1:20,30:10:100,200:100:700];
 filterVoronoiWeighted=[4,10:10:80];
 filterVoronoiWeighted=arrayfun(@(x) num2str(x,'%10.2f\n'),filterVoronoiWeighted,'UniformOutput',false);
 
-for i=length(folders):length(folders)
+for i=length(folders)-2:length(folders)
 
    
-    imagesPath=[rootPath folders{i} '\images\'];
-    dataPath=[rootPath folders{i} '\data\'];
+%     imagesPath=[rootPath folders{i} '\images\'];
+    imagesPath=[rootPath folders{i} '\'];
+%     dataPath=[rootPath folders{i} '\data\'];
     imagesName=dir(imagesPath); 
     imagesName=imagesName(3:end,:);
     
@@ -38,8 +45,9 @@ for i=length(folders):length(folders)
         img=imread([imagesPath photoName]);
         
         BW=im2bw(img);
-        if(sum(sum(BW==0))>sum(sum(BW==1)))
+        if(sum(sum(BW==0))>sum(sum(BW==1))) && isempty(strfind(folders{i},'neo_samples'))
            BW=1-BW; 
+           
         end
         BW=bwareaopen(BW,artifactsSize);
         L_img=bwlabel(BW);
@@ -76,6 +84,7 @@ for i=length(folders):length(folders)
         photoName
         camroll(-90)
         set(gca,'Visible','off')
+        mkdir(['..\excels\vertices\' folders{i} '\'])
         print('-dtiff','-r300',['..\excels\vertices\' folders{i} '\' photoName(1:end-4) '.tiff'])
         close all
         

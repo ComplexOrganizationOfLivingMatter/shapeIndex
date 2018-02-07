@@ -12,8 +12,6 @@ function [areaCells,perimCells]=calculateAreaPerim(L_img,verticesInfo,validCells
     
         if ismember(i,validCells)
             
-            i
-
             [indexes,~]=find(arrayCellVertices==i);
             indexes=indexes(logical(1-ismember(indexes,emptyCells)));
             V=vertcat(verticesInfo.verticesPerCell{indexes,1});
@@ -22,9 +20,7 @@ function [areaCells,perimCells]=calculateAreaPerim(L_img,verticesInfo,validCells
             %and sorted vertices to create a polygon and capture it area
             [perimCells(i),sortedVertices] = perimeterFromVertices(V);
             areaCells(i)=polyarea(sortedVertices(:,1),sortedVertices(:,2));
-%             if size(sortedVertices, 1) < 4
-%                 throw exception
-%             end
+
             plot(sortedVertices(:,1),sortedVertices(:,2));
             hold on;
         end

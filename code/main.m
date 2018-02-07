@@ -40,7 +40,7 @@ for i=length(folders)-2:length(folders)
     end
     
     
-    parfor j=1:size(imagesName,1) 
+    for j=1:size(imagesName,1) 
         photoName=imagesName(j).name;
         img=imread([imagesPath photoName]);
         

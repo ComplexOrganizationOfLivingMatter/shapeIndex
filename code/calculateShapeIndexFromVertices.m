@@ -24,18 +24,20 @@ function [ medianShapeIndex,averageShapeIndex,totalValidCells] = calculateShapeI
     lastColumnCells=unique(W(1:end,end))';
     %outRoiCells=unique(W((1-BW)==0))';%added for neo_samples
     
-    noValidCells=unique([firstRowCells,lastRowCells,firstColumnCells,lastColumnCells]);%,outRoiCells]);
+    noValidCellsBorders=unique([firstRowCells,lastRowCells,firstColumnCells,lastColumnCells]);%,outRoiCells]);
     
-    noValidCells=noValidCells(noValidCells~=0);
-    if length(noValidCells)<30
+    noValidCells=noValidCellsBorders(noValidCellsBorders~=0);
+    if length(noValidCells)<50
         areaCell=regionprops(W,'Area');
         areaCell=cat(1,areaCell.Area);
         per80 = prctile(areaCell,80);
         noValidBigArea=areaCell>5*per80;
         noValidCells=find(noValidBigArea==1);
+        noValidCells=noValidCells(ismember(noValidCells,noValidCellsBorders));
         noValidCells=unique([noValidCells;vertcat(neighs{noValidCells})]);
+        noValidCells=unique([noValidCells;noValidCellsBorders']);
     end
-    validCells=setxor(numCells,noValidCells);
+    validCells=setdiff(numCells,noValidCells);
     
     %calculate area and perimeter of involved cells
     try
